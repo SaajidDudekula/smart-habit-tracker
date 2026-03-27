@@ -78,7 +78,7 @@ smart-habit-tracker/
 │   └── package.json
 │
 ├── database/
-│   └── schema.sql
+│   └── smart_habits.sql
 │
 └── README.md
 ```
