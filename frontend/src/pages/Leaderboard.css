@@ -1,0 +1,108 @@
+/* ==============================
+   LEADERBOARD PAGE
+============================== */
+
+.leaderboard-page {
+  padding: 32px;
+  color: #e5e7eb;
+  min-height: 100vh;
+}
+
+.leaderboard-page h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+/* ==============================
+   STATES
+============================== */
+
+.loading {
+  color: #94a3b8;
+}
+
+.empty-state {
+  padding: 32px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  text-align: center;
+}
+
+.empty-state span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ==============================
+   TABLE
+============================== */
+
+.leaderboard-table {
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  overflow: hidden;
+}
+
+/* Header */
+.table-header {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px 140px 100px;
+  padding: 18px 24px;
+  font-size: 14px;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Row */
+.table-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px 140px 100px;
+  padding: 18px 24px;
+  align-items: center;
+  transition: background 0.15s ease;
+}
+
+.table-row:hover {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+/* ==============================
+   CELLS
+============================== */
+
+.rank {
+  font-size: 20px;
+}
+
+.user {
+  font-weight: 600;
+}
+
+.today-active {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.table-row {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: rowIn 0.35s ease forwards;
+}
+
+@keyframes rowIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
