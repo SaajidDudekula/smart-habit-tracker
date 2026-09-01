@@ -1,0 +1,134 @@
+{
+  "theme": "The Performance Pro (Elite Athleticism & Precision)",
+  "vibe": "Command-center focus. High-visibility 'Tactical' look. Built for consistency and high-performance tracking.",
+  "typography": {
+    "fonts": {
+      "heading": "Barlow Condensed",
+      "body": "DM Sans",
+      "mono": "JetBrains Mono"
+    },
+    "rules": {
+      "headings": "MUST use Strong Condensed Sans (900 weight) with tight letter spacing (tracking-tight) for a 'heavy-weight' feel.",
+      "labels": "MUST be Uppercase, Tiny (text-xs), Wide Spacing (tracking-[0.2em]).",
+      "line_height": "Tight (leading-none) for headers, Loose (leading-relaxed) for body."
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl",
+      "h3": "text-xl sm:text-2xl",
+      "body": "text-base",
+      "small": "text-sm or text-xs"
+    }
+  },
+  "colors": {
+    "dark": {
+      "background": "#0A0A0A",
+      "foreground": "#FFFFFF",
+      "surface": "#141414",
+      "primary": "#007AFF",
+      "accent": "#FF3B30",
+      "border": "#262626",
+      "muted": "#8A8A8E"
+    },
+    "light": {
+      "background": "#F5F5F7",
+      "foreground": "#000000",
+      "surface": "#FFFFFF",
+      "primary": "#007AFF",
+      "accent": "#FF3B30",
+      "border": "#E5E5EA",
+      "muted": "#8E8E93"
+    },
+    "rules": [
+      "Default to Dark Mode for the tactical command-center feel.",
+      "Tactical Minimalism: Replace soft shadows with 1px solid strokes or 2px 'Inner Glow' highlights.",
+      "Use high-saturation accent blocks (Volt Blue/Electric Blaze) for progress bars and CTA buttons.",
+      "ALWAYS explicitly set text color on hover (e.g. hover:bg-primary hover:text-white).",
+      "No pure #808080. Tint neutrals with blue."
+    ]
+  },
+  "visual_enhancers": {
+    "surfaces": "GRID BORDERS (The 'Technical' Look). Expose the skeleton. Container uses border-collapse style layout. Items have border-r border-b border-border/40.",
+    "dashboard_cards": "Flat background, 1px subtle border, NO shadow. On hover: slight lift (-translate-y-1), border color brightens.",
+    "glassmorphism": "Avoid on main dashboard to prevent visual refraction of data. Use flat solid surfaces for maximum clarity. Can be used ONLY for sticky top navigation.",
+    "textures": "Use strict geometric shapes. No noise, just clean data clarity."
+  },
+  "layouts": {
+    "general": "High Density Grid. Base Grid: grid-cols-1 md:grid-cols-3 lg:grid-cols-4. Tight gaps (gap-4 or gap-6).",
+    "spacing": "Generous Spacing Philosophy inside widgets (p-6, p-8). Containers with border MUST have internal padding to prevent text collision.",
+    "screens": {
+      "dashboard": "Bento layout. Top-left: North Star Metric (Current active streak). Right: Habit consistency Heatmap (Recharts). Bottom: Today's Habits list with inline complete toggle.",
+      "leaderboard": "Tactical rankings view. Top 3 prominently displayed with large avatars and neon rank numbers. Table layout below with hover states for rows.",
+      "history": "Calendar visualization (heatmap) or large scannable log."
+    }
+  },
+  "components": {
+    "navigation": "Left sidebar (collapsible) for desktop. Hamburger for mobile. Sidebar MUST have solid background.",
+    "habit_list": "List format. DO NOT overuse card component. Use flat, rectangular rows with 1px bottom border. Hover state should highlight the row with a 1px primary color left border.",
+    "toggle_checkbox": "Use Shadcn Checkbox. Scale animation on check. Primary color fill when checked.",
+    "charts": "Use Recharts/Shadcn Charts for heatmap and weekly progress. Minimalist tooltips. Solid color fills (primary/accent), no chaotic gradients.",
+    "forms": "Use Shadcn Form, Input. Left-aligned labels."
+  },
+  "motion": {
+    "rules": [
+      "Staggered entrance animations for habit lists.",
+      "Micro-animations on hover (lift, color shift).",
+      "Satisfying scale-bounce when a habit is marked complete.",
+      "DO NOT use transition: all. Target specific properties (e.g. transition: transform 0.2s ease, background-color 0.2s ease)."
+    ]
+  },
+  "media": {
+    "icons": "Use @phosphor-icons/react (Duotone weight) for high-end app feel.",
+    "image_urls": [
+      {
+        "category": "leaderboard_avatar_1",
+        "url": "https://images.unsplash.com/photo-1740252117027-4275d3f84385?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBwb3J0cmFpdCUyMGF2YXRhcnxlbnwwfHx8fDE3ODgxNjE1Mjl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Avatar for 1st place"
+      },
+      {
+        "category": "leaderboard_avatar_2",
+        "url": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBwb3J0cmFpdCUyMGF2YXRhcnxlbnwwfHx8fDE3ODgxNjE1Mjl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Avatar for 2nd place"
+      },
+      {
+        "category": "leaderboard_avatar_3",
+        "url": "https://images.pexels.com/photos/38424098/pexels-photo-38424098.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Avatar for 3rd place"
+      },
+      {
+        "category": "leaderboard_avatar_4",
+        "url": "https://images.pexels.com/photos/18505361/pexels-photo-18505361.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Avatar for other ranks"
+      }
+    ]
+  },
+  "accessibility": {
+    "rules": [
+      "Normal text: Min 4.5:1 contrast. Large text: Min 3:1.",
+      "Respect prefers-reduced-motion.",
+      "All interactive elements MUST include data-testid (e.g., data-testid='habit-toggle-button').",
+      "DO NOT use complete transparent background in header, overlays, or surfaces that have content under them."
+    ]
+  },
+  "instructions_to_main_agent": {
+    "universal_guidelines": [
+      "Avoid 'AI slop' aesthetic. No generic centered layouts, simplistic gradients, or uniform styling.",
+      "Create depth through layered design elements with z-index hierarchy, NOT drop shadows.",
+      "You MUST NOT center align the app container (.App { text-align: center; } is FORBIDDEN).",
+      "NEVER use AI assistant Emoji characters (🤖🧠💭💡🔮🎯) for icons.",
+      "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+      "Prioritize using pre-existing components from src/components/ui.",
+      "Use sonner for toast notifications.",
+      "NEVER use teal green or teal blue (#1B93A4) for dashboards."
+    ],
+    "action_items": [
+      "Install required fonts: Barlow Condensed & DM Sans.",
+      "Install @phosphor-icons/react.",
+      "Setup the routes: Dashboard, History, Leaderboard, Auth.",
+      "Mock API calls in the frontend if backend is unlinked, to ensure the UI is fully visible.",
+      "Apply the color palette to index.css overwriting defaults.",
+      "Implement Dark mode by default.",
+      "Follow the .js file extensions instead of .tsx."
+    ]
+  }
+}
