@@ -22,8 +22,8 @@ export default function AuthPage() {
   const authMutation = useMutation({
     mutationFn: () =>
       mode === "login"
-        ? apiPost<AuthResponse>("/auth/login", { email, password })
-        : apiPost<AuthResponse>("/auth/register", { name, email, password }),
+        ? apiPost<AuthResponse>("/api/auth/login", { email, password })
+        : apiPost<AuthResponse>("/api/auth/register", { name, email, password }),
     onSuccess: ({ user }) => {
       queryClient.setQueryData(["auth", "me"], user);
       toast.success(
