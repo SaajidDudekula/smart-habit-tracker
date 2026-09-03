@@ -23,12 +23,16 @@ async def lifespan(app: FastAPI):
 
 # Create the main app without a prefix
 app = FastAPI(lifespan=lifespan)
-
+app = FastAPI(...)
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
 
 # Add your routes to the router instead of directly to app
+@app.get("/")
+async def root():
+    return {"message": "Smart Habit Tracker API is running"}
+    
 @api_router.get("/")
 async def root():
     return {"message": "Smart Habit Tracker API", "status": "ok"}
