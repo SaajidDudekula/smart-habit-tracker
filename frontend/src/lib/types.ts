@@ -55,4 +55,5 @@ export interface LeaderboardEntry {
   score: number;
   streak: number;
   completed: number;
+  active_habits: number;
 }

@@ -7,3 +7,4 @@ class LeaderboardEntry(BaseModel):
     score: int
     streak: int
     completed: int
+    active_habits: int

@@ -3,10 +3,13 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from fastapi import Cookie, HTTPException, status
+from fastapi import Cookie, Depends, HTTPException, status
 from passlib.context import CryptContext
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from lib.db import db
+from database import get_db
+from db_models import UserRow
 from models.auth import UserPublic
 
 
@@ -29,7 +32,10 @@ def create_access_token(user_id: str) -> str:
     return jwt.encode({"sub": user_id, "exp": expires}, secret, algorithm=JWT_ALGORITHM)
 
 
-async def get_current_user(token: str | None = Cookie(default=None, alias=AUTH_COOKIE)) -> dict:
+async def get_current_user(
+    token: str | None = Cookie(default=None, alias=AUTH_COOKIE),
+    session: AsyncSession = Depends(get_db),
+) -> UserRow:
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required")
     try:
@@ -39,13 +45,16 @@ async def get_current_user(token: str | None = Cookie(default=None, alias=AUTH_C
             raise ValueError
     except (jwt.PyJWTError, ValueError, KeyError):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid session")
-    user = await db.users.find_one({"id": user_id})
+    user = await session.scalar(select(UserRow).where(UserRow.id == user_id))
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     return user
 
 
-async def get_optional_current_user(token: str | None = Cookie(default=None, alias=AUTH_COOKIE)) -> dict | None:
+async def get_optional_current_user(
+    token: str | None = Cookie(default=None, alias=AUTH_COOKIE),
+    session: AsyncSession = Depends(get_db),
+) -> UserRow | None:
     if not token:
         return None
     try:
@@ -55,11 +64,11 @@ async def get_optional_current_user(token: str | None = Cookie(default=None, ali
             return None
     except (jwt.PyJWTError, KeyError):
         return None
-    return await db.users.find_one({"id": user_id})
+    return await session.scalar(select(UserRow).where(UserRow.id == user_id))
 
 
-def public_user(user: dict) -> UserPublic:
-    return UserPublic(id=user["id"], name=user["name"], email=user["email"])
+def public_user(user: UserRow) -> UserPublic:
+    return UserPublic(id=user.id, name=user.name, email=user.email)
 
 
 def new_id() -> str:

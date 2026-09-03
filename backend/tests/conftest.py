@@ -45,3 +45,32 @@ async def aclient():
 
 
 # --- app-specific fixtures below this line ---
+
+import uuid
+
+
+@pytest.fixture
+def auth_client():
+    """httpx.Client with a freshly-registered unique user's session cookie attached.
+
+    The auth cookie is issued with Secure=true; http.cookiejar (used internally by
+    httpx) refuses to replay Secure cookies over a plain http:// connection to
+    localhost. We extract the raw token value and re-attach it as a plain (non-secure)
+    cookie on a fresh client so it is sent on every request, exactly like a browser
+    would send it over the real https origin.
+    """
+    email = f"tscheck-user-{uuid.uuid4().hex[:10]}@example.com"
+    password = "SecurePass123"
+    with httpx.Client(base_url=API_URL, timeout=30.0) as register_client:
+        resp = register_client.post("/auth/register", json={"name": "TS Check User", "email": email, "password": password})
+        assert resp.status_code == 201, f"fixture register failed: {resp.status_code} {resp.text}"
+        user = resp.json()["user"]
+        token = resp.cookies.get("habit_access_token")
+        assert token, f"no habit_access_token cookie in register response: {resp.headers}"
+
+    c = httpx.Client(base_url=API_URL, timeout=30.0, cookies={"habit_access_token": token})
+    c.user = user
+    c.email = email
+    c.password = password
+    yield c
+    c.close()

@@ -1,0 +1,107 @@
+{
+  "iteration": 1,
+  "mode": "generate",
+  "summary": "10/10 backend pytest tests passed; 6/6 browser checks passed. All 7 acceptance criteria exercised (some criteria covered by both a backend test and a browser check).",
+  "passed": 13,
+  "failed": 0,
+  "bugs": [],
+  "action_items": [],
+  "retest_needed": false,
+  "checks": [
+    {
+      "criterion": "Register and sign in with custom JWT authentication",
+      "name": "test_tscheck_registration_session.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "POST /api/auth/register -> 201 with Set-Cookie session=...; HttpOnly, Secure, SameSite flags asserted on response cookie"
+    },
+    {
+      "criterion": "Register and sign in with custom JWT authentication",
+      "name": "test_tscheck_session_lifecycle.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "GET /api/auth/me with session cookie -> 200 returns registered user; logout clears cookie; subsequent /api/auth/me -> 401"
+    },
+    {
+      "criterion": "Register and sign in with custom JWT authentication",
+      "name": "register-signin-signout",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Registered tscheck-auth-*@example.com via UI -> redirected to dashboard-page; cookie confirmed httpOnly+secure via page.context().cookies(); signed out -> auth-page shown; signed back in -> dashboard-page shown again. Screenshots captured for each step."
+    },
+    {
+      "criterion": "Habit CRUD uses Supabase PostgreSQL",
+      "name": "test_tscheck_habit_crud.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "POST /api/habits -> 201 creates row; GET /api/habits -> 200 lists it; PUT /api/habits/{id} -> 200 updates name; DELETE /api/habits/{id} -> 200/204; subsequent GET confirms removal, all against Supabase Postgres via DATABASE_URL"
+    },
+    {
+      "criterion": "Habit CRUD uses Supabase PostgreSQL",
+      "name": "habit-crud-persists",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Created tscheck-habit-* via UI form, verified visible, reloaded page (persisted); edited name, reloaded (edit persisted); deleted habit, reloaded (removal persisted)."
+    },
+    {
+      "criterion": "Daily completion constraint and history",
+      "name": "test_tscheck_completion_toggle.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "POST /api/habits/{id}/complete -> 201 completed=true creates one completion for today; second POST -> 200 completed=false removes it; verified idempotent single-row-per-day constraint"
+    },
+    {
+      "criterion": "Daily completion constraint and history",
+      "name": "test_tscheck_history_dashboard.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "After completing a habit, GET /api/history reflects the new completion entry; GET /api/habits/dashboard totals match"
+    },
+    {
+      "criterion": "Daily completion constraint and history",
+      "name": "completion-toggle-history",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Toggled tscheck-toggle-habit-* on -> row shows completed (line-through) and habit name appears on History page; toggled off -> line-through removed and entry disappears from History page."
+    },
+    {
+      "criterion": "Dashboard analytics",
+      "name": "dashboard-analytics-update",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Baseline today's score 0/0; after adding habit -> 0/1; after completing it -> 1/1, active streak = 1, 7-day consistency non-zero, weekly-summary count includes the completion."
+    },
+    {
+      "criterion": "Live social-circle leaderboard",
+      "name": "test_tscheck_leaderboard.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "GET /api/leaderboard for a freshly registered tscheck user returns an entry with active_habits=0; after POST /api/habits, active_habits becomes 1 for that user; no seeded/default profiles present"
+    },
+    {
+      "criterion": "Live social-circle leaderboard",
+      "name": "leaderboard-live-updates",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Registered TscheckLB* user, immediately visible in Your Circle table with 0 active habits; after adding a habit, row updates to 1 active habit within 20s poll (leaderboard refetchInterval)."
+    },
+    {
+      "criterion": "Friendly leaderboard language",
+      "name": "leaderboard-friendly-language",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "leaderboard-title = 'Friends ranking.'; 'Your circle' section header visible; podium shows 'Circle Leader', 'Momentum Maker', 'Consistency Crew', ordinal '...in your circle' text, 'consistency pts' label, and table column 'Active habits'."
+    },
+    {
+      "criterion": "Production request security",
+      "name": "test_tscheck_origin_security.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "POST /api/auth/register with Origin: http://localhost:3000 (cross-site) -> 403 {'detail':'Origin not allowed'}; same request with Origin=CORS_ORIGINS public URL -> 201; protected route without session cookie -> 401. Cross-checked manually via curl: localhost:3000 origin -> 403, public URL origin -> 201."
+    }
+  ],
+  "notes": [
+    "Backend CORS/origin enforcement restricts requests to the configured public URL (CORS_ORIGINS env), so ALL browser checks were run against https://habit-tracker-2480.preview.emergentagent.com (the ingress path) rather than localhost:3000 dev server, which otherwise returns 403 Origin not allowed on every API call. This matches the documented spec_deviation and is expected production behavior, not a bug.",
+    "7 acceptance criteria covered by 6 browser checks (one UI criterion, 'Production request security', has no dedicated UI surface and is covered purely by backend test + curl cross-check) and 7 backend test files, all passing."
+  ]
+}

@@ -1,32 +1,46 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 import os
 import logging
 from pathlib import Path
-from routers import auth, habits, leaderboard
-
-
+from urllib.parse import urlsplit
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-from lib.db import client, db
+from database import engine
+from routers import auth, habits, leaderboard
 
 
 # Startup runs before the yield, shutdown after it. Add your own setup/teardown here.
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await db.users.create_index("email", unique=True)
-    await db.habits.create_index([("user_id", 1), ("created_at", 1)])
-    await db.completions.create_index([("user_id", 1), ("habit_id", 1), ("date", 1)], unique=True)
     yield
-    client.close()
+    await engine.dispose()
 
 
 # Create the main app without a prefix
 app = FastAPI(lifespan=lifespan)
+
+
+@app.middleware("http")
+async def enforce_allowed_origins(request: Request, call_next):
+    origin = request.headers.get("origin")
+    public_origins = set(os.environ["CORS_ORIGINS"].split(","))
+    ingress_origins = set(filter(None, os.environ.get("TRUSTED_INGRESS_ORIGINS", "").split(",")))
+    fetch_site = request.headers.get("sec-fetch-site")
+    referer = request.headers.get("referer")
+    referer_origin = None
+    if referer:
+        parsed = urlsplit(referer)
+        referer_origin = f"{parsed.scheme}://{parsed.netloc}"
+    blocked_cross_site = fetch_site == "cross-site" or (referer_origin and referer_origin not in public_origins)
+    blocked_origin = origin and origin not in public_origins and origin not in ingress_origins
+    if blocked_cross_site or blocked_origin:
+        return JSONResponse(status_code=403, content={"detail": "Origin not allowed"})
+    return await call_next(request)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")

@@ -21,7 +21,7 @@ export default function Dashboard() {
   const statsQuery = useQuery({ queryKey: ["dashboard"], queryFn: () => apiGet<DashboardStats>("/habits/dashboard"), retry: false });
   const habits = habitsQuery.data ?? [];
   const stats = statsQuery.data ?? emptyStats;
-  const refresh = () => { void queryClient.invalidateQueries({ queryKey: ["habits"] }); void queryClient.invalidateQueries({ queryKey: ["dashboard"] }); void queryClient.invalidateQueries({ queryKey: ["history"] }); };
+  const refresh = () => { void queryClient.invalidateQueries({ queryKey: ["habits"] }); void queryClient.invalidateQueries({ queryKey: ["dashboard"] }); void queryClient.invalidateQueries({ queryKey: ["history"] }); void queryClient.invalidateQueries({ queryKey: ["leaderboard"] }); };
   const saveHabit = useMutation({
     mutationFn: () => editing ? apiPut<Habit>(`/habits/${editing}`, { name, description, color }) : apiPost<Habit>("/habits", { name, description, color }),
     onSuccess: () => { refresh(); setEditing(null); setName(""); setDescription(""); toast.success(editing ? "Habit updated" : "Habit added to today"); },
