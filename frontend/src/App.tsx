@@ -10,7 +10,7 @@ import History from "@/pages/History";
 import Leaderboard from "@/pages/Leaderboard";
 
 export default function App() {
-  const userQuery = useQuery({ queryKey: ["auth", "me"], queryFn: () => apiGet<User | null>("/auth/me"), retry: false });
+  const userQuery = useQuery({ queryKey: ["auth", "me"], queryFn: () => apiGet<User | null>("/api/auth/me"), retry: false });
   const user = userQuery.data;
   return <><Routes><Route path="/auth" element={<AuthPage />} /><Route element={userQuery.isLoading ? <LoadingShell /> : user ? <AppLayout user={user} /> : <Navigate to="/auth" replace />}><Route path="/" element={<Dashboard />} /><Route path="/history" element={<History />} /><Route path="/leaderboard" element={<Leaderboard />} /></Route><Route path="*" element={<Navigate to="/" replace />} /></Routes><Toaster position="bottom-right" richColors /></>;
 }
