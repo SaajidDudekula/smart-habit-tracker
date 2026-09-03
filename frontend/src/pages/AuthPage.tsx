@@ -26,7 +26,11 @@ export default function AuthPage() {
         : apiPost<AuthResponse>("/auth/register", { name, email, password }),
     onSuccess: ({ user }) => {
       queryClient.setQueryData(["auth", "me"], user);
-      toast.success(mode === "login" ? "Welcome back" : "Your account is ready");
+      toast.success(
+        mode === "login"
+          ? `Welcome back, ${user.name}!`
+          : `Welcome, ${user.name}—your habit journey starts now`,
+      );
       navigate("/");
     },
     onError: (error) => {

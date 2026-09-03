@@ -22,7 +22,7 @@ Habit / OS is a dark tactical habit-tracking command center. Authenticated users
 - `/api/leaderboard` ranks registered users by unique completion dates and total completions.
 
 ## Key flows
-1. Anonymous users land on `/auth`, register or sign in, then enter the dashboard.
+1. Anonymous users land on `/auth`, register or sign in, then enter the dashboard with a personalized welcome toast; registration uses a first-time journey message while login uses “Welcome back.”
 2. Dashboard users add, edit, delete, and toggle today's habits; mutations invalidate dashboard, habits, and history queries.
 3. History shows grouped completion records; the live social-circle leaderboard contains only registered users and shows active habits, friendly podium titles, ordinal positions, streaks, and consistency points.
 4. Sign out clears the httpOnly cookie and frontend query cache.
