@@ -1,4 +1,4 @@
-const BASE = `${import.meta.env.VITE_API_URL}/api`;
+const BASE = `${import.meta.env.VITE_API_URL}`;
 
 // Fields are declared, not constructor parameter properties: tsconfig sets
 // erasableSyntaxOnly, which rejects `constructor(readonly status: number)`.
