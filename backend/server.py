@@ -24,24 +24,6 @@ async def lifespan(app: FastAPI):
 # Create the main app without a prefix
 app = FastAPI(lifespan=lifespan)
 
-
-@app.middleware("http")
-async def enforce_allowed_origins(request: Request, call_next):
-    origin = request.headers.get("origin")
-    public_origins = set(os.environ["CORS_ORIGINS"].split(","))
-    ingress_origins = set(filter(None, os.environ.get("TRUSTED_INGRESS_ORIGINS", "").split(",")))
-    fetch_site = request.headers.get("sec-fetch-site")
-    referer = request.headers.get("referer")
-    referer_origin = None
-    if referer:
-        parsed = urlsplit(referer)
-        referer_origin = f"{parsed.scheme}://{parsed.netloc}"
-        blocked_cross_site = bool(referer_origin and referer_origin not in public_origins)
-        blocked_origin = origin and origin not in public_origins and origin not in ingress_origins
-    if blocked_cross_site or blocked_origin:
-        return JSONResponse(status_code=403, content={"detail": "Origin not allowed"})
-    return await call_next(request)
-
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
