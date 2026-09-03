@@ -51,7 +51,7 @@ export default function AuthPage() {
           </div>
           <div className="relative z-10 max-w-xl">
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#007aff]" data-testid="auth-eyebrow">Consistency command center</p>
-            <h1 className="font-heading text-6xl font-black uppercase leading-[0.88] tracking-[-0.045em] xl:text-8xl" data-testid="auth-hero-title">Make the<br /><span className="text-[#007aff]">ordinary</span><br />unstoppable.</h1>
+            <h1 className="font-heading text-6xl font-black uppercase leading-[0.98] tracking-[-0.018em] xl:text-8xl" data-testid="auth-hero-title">Make the<br /><span className="text-[#007aff]">ordinary</span><br />unstoppable.</h1>
             <p className="mt-8 max-w-md text-base leading-relaxed text-[#8a8a8e]" data-testid="auth-hero-copy">Your daily habits, streak momentum, and competitive edge in one precise operating system.</p>
           </div>
           <div className="relative z-10 grid max-w-xl grid-cols-3 border border-[#262626] bg-[#141414]" data-testid="auth-proof-grid">
